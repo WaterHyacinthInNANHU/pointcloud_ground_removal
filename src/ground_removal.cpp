@@ -26,16 +26,16 @@ py::array_t<float> ground_removal_kernel(
         cloud->points[i].x = ref_input(i, 0);
         cloud->points[i].y = ref_input(i, 1);
         cloud->points[i].z = ref_input(i, 2);
-        cloud->points[i].intensity = ref_input(i, 3);
+        // cloud->points[i].intensity = ref_input(i, 3);
     }
 //    std::cout << "INPUT SHAPE: " << ref_input.shape(0) << " " << ref_input.shape(1) << std::endl;
-    std::cout << distance_th << " " << iter_times << std::endl;
+    // std::cout << distance_th << " " << iter_times << std::endl;
 
     // filter ground
     FilterGroundResult segmentation = filter_ground(cloud, distance_th, iter_times);
 
     // results
-    int data_field = 5;
+    int data_field = 4;
     auto result = py::array_t<float>(py::array::ShapeContainer(
             {(const long) input.shape(0), data_field}
     ));
@@ -48,8 +48,8 @@ py::array_t<float> ground_removal_kernel(
         buf[buf_index_base + 0] = segmentation.non_ground->points[i].x;
         buf[buf_index_base + 1] = segmentation.non_ground->points[i].y;
         buf[buf_index_base + 2] = segmentation.non_ground->points[i].z;
-        buf[buf_index_base + 3] = segmentation.non_ground->points[i].intensity;
-        buf[buf_index_base + 4] = 0.0;
+        // buf[buf_index_base + 3] = segmentation.non_ground->points[i].intensity;
+        buf[buf_index_base + 3] = 0.0;
     }
     // 地面点
     for (int i = 0; i < segmentation.ground->size(); ++i) {
@@ -57,8 +57,8 @@ py::array_t<float> ground_removal_kernel(
         buf[buf_index_base + 0] = segmentation.ground->points[i].x;
         buf[buf_index_base + 1] = segmentation.ground->points[i].y;
         buf[buf_index_base + 2] = segmentation.ground->points[i].z;
-        buf[buf_index_base + 3] = segmentation.ground->points[i].intensity;
-        buf[buf_index_base + 4] = 255.0;
+        // buf[buf_index_base + 3] = segmentation.ground->points[i].intensity;
+        buf[buf_index_base + 3] = 255.0;
     }
     return result;
 }

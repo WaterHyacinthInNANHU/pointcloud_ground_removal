@@ -26,7 +26,6 @@ typename pcl::PointCloud<TPointType>::Ptr vector_to_pointcloud(std::vector<std::
         point.x = i[0];
         point.y = i[1];
         point.z = i[2];
-        point.intensity = i[3] * 255;
 
         pcl_pc->points.push_back(point);
     }
@@ -53,7 +52,7 @@ void visualize(PointCloudPtr cloud) {
 PointCloudPtr crop_ROI(const PointCloudPtr &input, float fov, float forward_distance = 200, float height_limit = 8) {
 
     // filter
-    pcl::PassThrough<XYZI> pass;
+    pcl::PassThrough<XYZ> pass;
     pass.setInputCloud(input);
     pass.setFilterFieldName("x");
     pass.setFilterLimits(0, forward_distance);
@@ -108,7 +107,7 @@ std::vector<std::vector<float>> load_KITTI_pointcloud(const std::string &path) {
 int main(int argc, char *argv[]) {
 
     // load pointcloud
-    auto cloud = vector_to_pointcloud<XYZI>(load_KITTI_pointcloud(std::string(argv[1])));
+    auto cloud = vector_to_pointcloud<XYZ>(load_KITTI_pointcloud(std::string(argv[1])));
 //    visualize(cloud);
 
     FilterGroundResult segmentation = filter_ground(cloud, 0.2, 20);

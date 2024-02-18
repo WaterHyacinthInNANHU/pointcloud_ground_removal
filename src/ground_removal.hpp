@@ -16,14 +16,14 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/extract_indices.h>
 
-typedef pcl::PointXYZI PointCloudType;
-typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
-typedef pcl::PointCloud<pcl::PointXYZI>::Ptr PointCloudPtr;
+typedef pcl::PointXYZ PointCloudType;
+typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
+typedef pcl::PointCloud<pcl::PointXYZ>::Ptr PointCloudPtr;
 typedef std::vector<std::vector<int>> ClusterIndices;
 
-typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
-typedef pcl::PointCloud<pcl::PointXYZI>::Ptr PointCloudPtr;
-typedef pcl::PointXYZI XYZI;
+typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
+typedef pcl::PointCloud<pcl::PointXYZ>::Ptr PointCloudPtr;
+typedef pcl::PointXYZ XYZ;
 
 
 struct FilterGroundResult {
@@ -49,7 +49,7 @@ FilterGroundResult filter_ground(const PointCloudPtr &input, double distance_th,
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
     pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
 
-    pcl::SACSegmentation<XYZI> seg;
+    pcl::SACSegmentation<XYZ> seg;
     seg.setOptimizeCoefficients(true);
     seg.setModelType(pcl::SACMODEL_PLANE);
     seg.setMethodType(pcl::SAC_RANSAC);
@@ -61,7 +61,7 @@ FilterGroundResult filter_ground(const PointCloudPtr &input, double distance_th,
 
     PointCloudPtr landscape(new PointCloud), ground(new PointCloud);
     // extract points
-    pcl::ExtractIndices<XYZI> extract;
+    pcl::ExtractIndices<XYZ> extract;
     extract.setInputCloud(input);
     extract.setIndices(inliers);
     extract.setNegative(true);

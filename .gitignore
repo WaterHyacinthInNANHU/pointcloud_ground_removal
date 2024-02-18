@@ -3,3 +3,5 @@ cmake-build-debug
 build
 dist
 *egg-info
+.history
+.vscode
